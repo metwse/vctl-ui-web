@@ -1,5 +1,6 @@
-import { createRoot } from 'react-dom/client';
 import React from 'react';
+import { createRoot } from 'react-dom/client';
+import App from './app';
 
 
 window.onload = function () {
@@ -10,6 +11,6 @@ window.onload = function () {
     const root = createRoot(document.body);
 
     root.render(
-        <>Hello, world!</>
+        <App></App>
     );
 }

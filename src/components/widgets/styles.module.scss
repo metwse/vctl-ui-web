@@ -1,0 +1,37 @@
+.dropdown-menu {
+    display: flex;
+    flex-direction: column; gap: .5em;
+    transition: .3s gap;
+
+    & header {
+        display: flex;
+        padding: .5em 1em;
+        border: .125em solid var(--bg-3); border-left: none; border-right: none;
+        font-size: .75em; text-transform: uppercase;
+        align-content: center; gap: .5em;
+        user-select: none; cursor: pointer;
+
+        & .icon {
+            transition: rotate .3s;
+            aspect-ratio: 1 / 1;
+        }
+    }
+
+    .children {
+        height: max-content;
+        transition: height .3s;
+        overflow: hidden;
+    }
+}
+
+.dropdown-menu[d-minimized] {
+    gap: 0;
+
+    & header .icon {
+        rotate: -90deg;
+    }
+
+    .children {
+        height: 0;
+   }
+}
