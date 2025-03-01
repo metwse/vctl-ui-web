@@ -1,0 +1,9 @@
+.individual-control,
+.control {
+    display: flex;
+    flex-direction: column; gap: 1.5em;
+}
+
+.individual-control {
+    gap: 1em;
+}

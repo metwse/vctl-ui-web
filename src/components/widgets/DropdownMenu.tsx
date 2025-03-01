@@ -3,17 +3,19 @@ import styles from './styles.module.scss';
 
 
 function DropdownMenu(
-    { children, title }: { children: JSX.Element, title: string }
+    { children, minimized, title }: 
+        { children: JSX.Element, minimized?: boolean, title: string }
 ) {
 
-    const [inactive, setInactive] = useState(false);
+    const [minimized_, setMinimized] = 
+        useState(!!minimized);
 
     return (
         <section 
             className={styles['dropdown-menu']} 
-            d-minimized={inactive ? "" : undefined}
+            d-minimized={minimized_ ? "" : undefined}
         >
-            <header onClick={() => setInactive(!inactive)}>
+            <header onClick={() => setMinimized(!minimized_)}>
                 <i className={`${styles['icon']} bi bi-chevron-down`}></i>
                 <span>{title}</span>
             </header>

@@ -3,7 +3,7 @@
     flex-direction: column; gap: .5em;
     transition: .3s gap;
 
-    & header {
+    & > header {
         display: flex;
         padding: .5em 1em;
         border: .125em solid var(--bg-3); border-left: none; border-right: none;
@@ -11,14 +11,16 @@
         align-content: center; gap: .5em;
         user-select: none; cursor: pointer;
 
-        & .icon {
+        & > .icon {
             transition: rotate .3s;
             aspect-ratio: 1 / 1;
         }
     }
 
-    .children {
+    & > .children {
         height: max-content;
+        padding-left: 1em;
+        border-left: .125em solid var(--bg-3);
         transition: height .3s;
         overflow: hidden;
     }
@@ -27,11 +29,11 @@
 .dropdown-menu[d-minimized] {
     gap: 0;
 
-    & header .icon {
+    & > header .icon {
         rotate: -90deg;
     }
 
-    .children {
+    & > .children {
         height: 0;
    }
 }

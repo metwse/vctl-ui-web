@@ -1,0 +1,77 @@
+@use 'sass:color';
+
+button {
+    position: relative;
+    font-size: 1.25em;
+    padding: .25em 1em;
+    border: none; background-color: var(--fg-2);
+
+    &:not(:disabled) {
+        cursor: pointer;
+    }
+
+    &::before {
+      content: ''; display: block;
+      position: absolute; inset: 0;
+      background-color: var(--fg-1); opacity: 0;
+      transition: .1s opacity;
+    }
+
+    &:hover {
+        &::before {
+            opacity: 0.1;
+        }
+    }
+
+    &:active {
+        &::before {
+            opacity: 0.2;
+        }
+    }
+
+    &:disabled {
+        &::before {
+            opacity: 0.5;
+        }
+    }
+}
+
+input[type="checkbox"] {
+    position: relative; appearance: none;
+    margin: 0;
+    width: 1.25em; height: 1.25em;
+    background-color: var(--fg-1);
+    transition: .1s background-color;
+    
+    &:after {
+        content: '✔';
+        font-size: .75em;
+        position: absolute; inset: .33em;
+        text-align: center;
+    }
+
+    &:not(:disabled) {
+        cursor: pointer;
+    }
+
+    &:checked {
+        background-color: var(--fg-2);
+    }
+}
+
+input[type="number"], input[type=""] {
+    padding: .25em .5em;
+    border: none; outline: none; background: none;
+    border-bottom: .125em solid var(--bg-3);
+    appearance: textfield;
+}
+
+input[type="number"] {
+    width: 6em;
+
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+}

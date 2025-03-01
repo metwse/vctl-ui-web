@@ -1,0 +1,21 @@
+.control {
+    display: flex;
+    flex-direction: column; gap: .5em;
+
+    & > section > div > * {
+        display: flex;
+        flex-direction: column; gap: .5em;
+
+        & > * {
+            display: flex;
+            width: fit-content;
+            gap: 1em;
+        }
+    }
+
+    & .arm {
+        display: grid;
+        grid-template-columns: max-content max-content;
+        align-items: center; gap: .5em 1em;
+    }
+}
