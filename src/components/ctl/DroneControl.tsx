@@ -2,10 +2,10 @@ import DropdownMenu from '../widgets/DropdownMenu.tsx';
 import styles from './control.module.scss';
 
 
-function DroneControl() {
+function DroneControl({ minimized }: { minimized?: boolean }) {
     return (
         <div className={styles['control']}>
-        <DropdownMenu title="controls">
+        <DropdownMenu title="control" minimized={minimized}>
             <div>
                 <div className={styles['arm']}>
                     <button>arm</button>
@@ -17,7 +17,7 @@ function DroneControl() {
             </div>
         </DropdownMenu>
 
-        <DropdownMenu title="movement">
+        <DropdownMenu title="movement" minimized={minimized}>
             <div className={styles['children']}>
                 <div>
                     <input type='number' placeholder='altitude' /> 

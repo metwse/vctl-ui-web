@@ -14,13 +14,13 @@ function App() {
                     <DroneControl />
                 </DropdownMenu>
 
-                <DropdownMenu title="drones">
+                <DropdownMenu title="individual control">
                     <div className={styles['individual-control']}>
                         <DropdownMenu title="drone 1" minimized>
-                            <DroneControl />
+                            <DroneControl minimized />
                         </DropdownMenu>
                         <DropdownMenu title="drone 2" minimized>
-                            <DroneControl />
+                            <DroneControl minimized />
                         </DropdownMenu>
                     </div>
                 </DropdownMenu>
