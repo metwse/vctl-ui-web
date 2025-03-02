@@ -15,7 +15,21 @@
 
     & .arm {
         display: grid;
-        grid-template-columns: max-content max-content;
+        grid-template-columns: 1fr 1fr;
         align-items: center; gap: .5em 1em;
+
+        & button:last-of-type {
+            transform: translateX(calc(50% + .5em))
+        }
+    }
+
+    & .movement-1 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr; gap: .5em;
+    }
+
+    & .movement-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr; gap: .5em;
     }
 }

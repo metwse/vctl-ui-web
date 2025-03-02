@@ -1,6 +1,5 @@
-# Swarm 2025 Frontend
-To run development server, run script `npm run dev`. There is no build script
-yet.
+# Swarm 2025 Frontend 
+To run development server, use `npm run dev`. There is no build script yet.
 
 
 # Code of Conduct

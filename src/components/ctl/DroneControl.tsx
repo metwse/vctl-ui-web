@@ -12,25 +12,26 @@ function DroneControl({ minimized }: { minimized?: boolean }) {
                     <button>force arm</button>
                     <button>disarm</button>
                     <button>force disarm</button>
+                    <button>emergency</button>
                 </div>
-                <button>emergency</button>
             </div>
         </DropdownMenu>
 
         <DropdownMenu title="movement" minimized={minimized}>
             <div className={styles['children']}>
-                <div>
+                <div className={styles['movement-1']}>
+                    <br />
                     <input type='number' placeholder='altitude' /> 
+                    <br />
                     <button>takeoff</button>
-                </div>
-                <div>
                     <button>land</button>
                     <button>track</button>
                 </div>
-                <div>
+                <div className={styles['movement-2']}>
                     <input type='number' placeholder='x' /> 
                     <input type='number' placeholder='y' /> 
                     <input type='number' placeholder='z' /> 
+                    <br />
                     <input type='number' placeholder='velocity' /> 
                     <button>move</button>
                 </div>
