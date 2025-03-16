@@ -17,16 +17,16 @@ function App() {
                 <DropdownMenu title="individual control">
                     <div className={styles['individual-control']}>
                         <DropdownMenu title="drone 1" minimized>
-                            <DroneControl minimized />
+                            <DroneControl />
                         </DropdownMenu>
                         <DropdownMenu title="drone 2" minimized>
-                            <DroneControl minimized />
+                            <DroneControl />
                         </DropdownMenu>
                     </div>
                 </DropdownMenu>
             </div>
         </>
-    )
+    );
 }
 
 

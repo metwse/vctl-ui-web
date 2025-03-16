@@ -7,7 +7,7 @@ function EnvironmentControl() {
         <div className={styles['control']}>
             <DropdownMenu title="environment">
                 <div>
-                    <input placeholder='1' type='number'/>
+                    <input placeholder='drone count' type='number'/>
                     <button>initialize environment</button>
                 </div>
             </DropdownMenu>
