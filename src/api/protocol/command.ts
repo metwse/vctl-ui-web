@@ -19,7 +19,7 @@ export interface Authenticate {
 export type Heartbeat = null;
 
 export interface InitializeEnvironment {
-    drone_count: number,
+    droneCount: number,
     force: boolean,
 };
 

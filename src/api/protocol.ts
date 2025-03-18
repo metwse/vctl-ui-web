@@ -5,7 +5,7 @@ import * as event from './protocol/event.ts';
 export interface CommandPayload {
     op: command.Op,
     d?: object,
-    response_id?: number,
+    responseId?: number,
 };
 
 export interface EventPayload {

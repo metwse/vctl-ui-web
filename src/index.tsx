@@ -4,8 +4,7 @@ import App from './app';
 
 window.onload = function () {
     const initialLoad = document.getElementById('initial-load');
-    if (initialLoad) 
-        initialLoad.remove();
+    initialLoad!.remove();
 
     const root = createRoot(document.body);
 

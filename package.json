@@ -9,9 +9,13 @@
     },
     "dependencies": {
         "react": "^19",
-        "react-dom": "^19"
+        "react-dom": "^19",
+
+        "snakify-ts": "~2.3",
+        "camelize-ts": "^3"
     },
     "devDependencies": {
+        "@types/react": "^19",
         "@types/react-dom": "^19",
         "@types/ws": "^8",
         "@vitejs/plugin-react-swc": "^3",

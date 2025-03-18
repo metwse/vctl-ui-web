@@ -21,18 +21,18 @@ function DroneControl({ minimized }: { minimized?: boolean }) {
             <div className={styles['children']}>
                 <div className={styles['movement-1']}>
                     <br />
-                    <input type='number' placeholder='altitude' /> 
+                    <input type='number' placeholder='altitude' />
                     <br />
                     <button>takeoff</button>
                     <button>land</button>
                     <button>track</button>
                 </div>
                 <div className={styles['movement-2']}>
-                    <input type='number' placeholder='x' /> 
-                    <input type='number' placeholder='y' /> 
-                    <input type='number' placeholder='z' /> 
+                    <input type='number' placeholder='x' />
+                    <input type='number' placeholder='y' />
+                    <input type='number' placeholder='z' />
                     <br />
-                    <input type='number' placeholder='velocity' /> 
+                    <input type='number' placeholder='velocity' />
                     <button>move</button>
                 </div>
             </div>

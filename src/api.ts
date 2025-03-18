@@ -1,14 +1,25 @@
-import WebSocket from 'ws';
+import {
+    CommandPayload, EventPayload,
+    command, event
+} from './api/protocol.ts'
+import snakify from 'snakify-ts'
+import camelize from 'camelize-ts'
+import { CommandResponse } from './api/protocol/event.ts'
 
 
+/**
+ * API client library session.
+ */
 class Session {
-    token: string 
     ws: WebSocket
+    responseCallbacks: Map<number, (response: object) => void>
+    responseId: number;
 
     /** @constructor */
-    constructor(token: string, ws: WebSocket) {
-        this.token = token;
+    constructor(ws: WebSocket) {
         this.ws = ws;
+        this.responseCallbacks = new Map;
+        this.responseId = 0;
     }
 
     /**
@@ -16,17 +27,109 @@ class Session {
      * @param {string} token - API token.
      * @param {string} api - The URL of the backend.
      */
-    async connect(token: string, api: string) {
+    static async connect(token: string, api: string) {
         const session = await new Promise<Session>((res, rej) => {
             const ws = new WebSocket(api);
 
-            ws.onopen = () => res(new Session(token, ws));
+            ws.onopen = () => res(new Session(ws));
             ws.onclose = e => rej(e);
         });
 
-        // TODO: Send Authenticate payload
+        // Bind message listener to the WebSocket. Command responses are
+        // handled with the `onmessage` handler. No command should be sent
+        // before this binding.
+        session.ws.onmessage = (payload) => {
+            const response = camelize<EventPayload, false>(
+                JSON.parse(payload.data)
+            );
+
+            const d = response.d;
+            let resolver;
+
+            switch (response.op) {
+                case event.Op.CommandResponse:
+                    resolver = session
+                        .responseCallbacks
+                        .get((d as CommandResponse).responseId);
+
+                    if (resolver)
+                        resolver((d as CommandResponse).response);
+                    break;
+                default:
+                    // TODO: opcode handlers
+                    break;
+            }
+        }
+
+        const payloadData: command.Authenticate = { token };
+        const response = await session.send(
+            command.Op.Authenticate,
+            true,
+            payloadData
+        ) as { success: boolean };
+
+        if (!response.success)
+            throw false;
 
         return session;
+    }
+
+    /**
+     * Sends the payload to the server.
+     * @param {command.Op} op - Opcode of the payload.
+     * @param {boolean} awaitResponse - Whether or not await server response.
+     * @param {object?} d - Payload data.
+     */
+    async send(
+        op: command.Op,
+        awaitResponse: boolean,
+        d?: object,
+    ): Promise<object | null> {
+        // A response id is provided to the server if await response set to
+        // true.
+        const responseId = awaitResponse ? this.responseId++ : undefined;
+
+        const payload: CommandPayload = {
+            op, d, responseId
+        };
+
+        const stringPayload = JSON.stringify(
+            snakify(payload)
+        );
+
+        this.ws.send(stringPayload);
+
+        if (responseId !== undefined) {
+            let resolver: (response: object) => void;
+
+            const promise = new Promise<object>((res) => {
+                // Exposing `res` to the upper scope.
+                resolver = res;
+            });
+
+            // Since the `resolver` variable is set after the callback is
+            // assigned, it is necessary to check if the resolver is set to a
+            // Promise resolver. Having a WebSocket response that is faster
+            // than a few lines of initialization code is practically
+            // impossible, but this check ensures the code behaves correctly
+            // under any condition.
+            this.responseCallbacks.set(
+                responseId,
+                // Pushes resolver into the callback list.
+                (response: object) => {
+                    const tryResolverInitialization = () => {
+                        if (!resolver)
+                            setTimeout(tryResolverInitialization, 1);
+                        else
+                            resolver(response);
+                    };
+                    tryResolverInitialization();
+                }
+            );
+
+            return await promise;
+        } else
+            return null;
     }
 }
 

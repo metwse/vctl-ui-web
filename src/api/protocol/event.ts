@@ -16,11 +16,11 @@ export interface EnvironmentStatus {
 };
 
 export interface CommandResponse {
-    response: string,
+    response: object,
     responseId: number,
 };
 
 export interface DroneCommandResponse {
-    response: string,
+    response: object,
     responseId: number,
 };
