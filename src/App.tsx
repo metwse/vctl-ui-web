@@ -1,7 +1,7 @@
-import DroneControl from './components/ctl/DroneControl.tsx';
-import EnvironmentControl from './components/ctl/EnvironmentControl.tsx';
-import DropdownMenu from './components/widgets/DropdownMenu.tsx';
-import styles from './app.module.scss';
+import DroneControl from './components/ctl/DroneControl';
+import EnvironmentControl from './components/ctl/EnvironmentControl';
+import DropdownMenu from './components/widgets/DropdownMenu';
+import styles from './App.module.scss';
 
 
 function App() {

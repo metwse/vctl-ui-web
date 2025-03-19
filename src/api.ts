@@ -1,10 +1,10 @@
 import {
     CommandPayload, EventPayload,
     command, event
-} from './api/protocol.ts'
+} from './api/protocol'
 import snakify from 'snakify-ts'
 import camelize from 'camelize-ts'
-import { CommandResponse } from './api/protocol/event.ts'
+import { CommandResponse } from './api/protocol/event'
 
 
 /**
@@ -38,22 +38,26 @@ class Session {
         // Bind message listener to the WebSocket. Command responses are
         // handled with the `onmessage` handler. No command should be sent
         // before this binding.
-        session.ws.onmessage = (payload) => {
-            const response = camelize<EventPayload, false>(
-                JSON.parse(payload.data)
+        session.ws.onmessage = (stringPayload) => {
+            const payload = camelize<EventPayload, false>(
+                JSON.parse(stringPayload.data)
             );
 
-            const d = response.d;
+            const d = payload.d;
             let resolver;
 
-            switch (response.op) {
+            switch (payload.op) {
                 case event.Op.CommandResponse:
                     resolver = session
                         .responseCallbacks
                         .get((d as CommandResponse).responseId);
 
-                    if (resolver)
+                    if (resolver) {
                         resolver((d as CommandResponse).response);
+                        session
+                            .responseCallbacks
+                            .delete((d as CommandResponse).responseId);
+                    }
                     break;
                 default:
                     // TODO: opcode handlers
