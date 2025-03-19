@@ -1,17 +1,12 @@
 import { createRoot } from 'react-dom/client';
-import App from './App';
-import Session from './api';
+import App from './App.tsx';
+import Session from './api.ts';
 
 
-window.onload = async function () {
-    const initialLoad = document.getElementById('initial-load');
-    initialLoad!.remove();
+window.session = await Session.connect('changeme', 'http://localhost:3000/');
+console.log(window.session)
 
-    window.session = await Session.connect('changeme', 'http://localhost:3000/');
+document.getElementById('initial-load')!.remove();
 
-    const root = createRoot(document.body);
+createRoot(document.body).render(<App></App>);
 
-    root.render(
-        <App></App>
-    );
-}

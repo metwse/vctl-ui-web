@@ -1,10 +1,10 @@
 import {
     CommandPayload, EventPayload,
     command, event
-} from './api/protocol'
+} from './api/protocol.ts'
 import snakify from 'snakify-ts'
 import camelize from 'camelize-ts'
-import { CommandResponse } from './api/protocol/event'
+import { CommandResponse } from './api/protocol/event.ts'
 
 
 /**
@@ -68,7 +68,6 @@ class Session {
         const payloadData: command.Authenticate = { token };
         const response = await session.send(
             command.Op.Authenticate,
-            true,
             payloadData
         ) as { success: boolean };
 
@@ -79,12 +78,24 @@ class Session {
     }
 
     /**
-     * Sends the payload to the server.
+     * Sends the payload and awaits its response.
      * @param {command.Op} op - Opcode of the payload.
-     * @param {boolean} awaitResponse - Whether or not await server response.
      * @param {object?} d - Payload data.
      */
-    async send(
+    async send(op: command.Op, d?: object) {
+        return await this.#sendInternal(op, true, d);
+    }
+
+    /**
+     * Sends the payload, not awaiting its response.
+     * @param {command.Op} op - Opcode of the payload.
+     * @param {object?} d - Payload data.
+     */
+    sendNoRes(op: command.Op, d?: object) {
+         this.#sendInternal(op, false, d);
+    }
+
+    async #sendInternal(
         op: command.Op,
         awaitResponse: boolean,
         d?: object,

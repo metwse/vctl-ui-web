@@ -1,4 +1,4 @@
-import Session from "../api";
+import Session from '../api.ts';
 
 
 declare global {
