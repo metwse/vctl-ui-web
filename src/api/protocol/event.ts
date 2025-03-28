@@ -10,6 +10,7 @@ export interface Telemetry {
 };
 
 export interface DroneTelemetry {
+    //! redundant telemetry_ prefix, use position and velocity directly
     telemetry_position: [number, number, number],
     telemetry_velocity: [number, number, number]
 }

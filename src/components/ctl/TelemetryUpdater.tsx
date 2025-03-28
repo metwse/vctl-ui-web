@@ -4,6 +4,7 @@ import { EventHandler } from "../../eventhandler.ts";
 import { useEffect, useState } from "react";
 import { Telemetry } from '../../api/protocol/event.ts'
 
+
 function TelemetryUpdater({ minimized }: { minimized?: boolean }){
     const [telemetry, setTelemetry] = useState([[0, 0, 0], [0, 0, 0]]);
 
@@ -14,6 +15,7 @@ function TelemetryUpdater({ minimized }: { minimized?: boolean }){
         })
     }
 
+    //! A good example of useState.
     useEffect(() => {
         EventHandler.on('telemetry_update', updatePosition);
 
@@ -22,15 +24,16 @@ function TelemetryUpdater({ minimized }: { minimized?: boolean }){
         }
     }, [])
 
+    //! TODO: style
     return(
         <div className={styles['control']}>
         <DropdownMenu title="telemetry" minimized={minimized}>
             <div className={styles['children']}>
                 <div className={styles['telemetry']}>
                     <h1>Position</h1>
-                        <p>{telemetry[0][0]} {telemetry[0][1]} {telemetry[0][2]}</p>
+                    <p>{telemetry[0][0]} {telemetry[0][1]} {telemetry[0][2]}</p>
                     <h2>Velocity</h2>
-                        <p>{telemetry[1][0]} {telemetry[1][1]}  {telemetry[1][2]}</p>
+                    <p>{telemetry[1][0]} {telemetry[1][1]}  {telemetry[1][2]}</p>
                 </div>
             </div>
 

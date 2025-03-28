@@ -4,13 +4,12 @@ import { EventHandler } from "../../eventhandler.ts";
 import { Arm, Disarm, Emergency, Takeoff, Land, Track, Move } from '../../api/protocol/droneCommand.ts';
 import { useState } from 'react';
 
+
 function DroneControl({ minimized }: { minimized?: boolean }) {
     const [values, setValues] = useState({
         altitude: 0,
-        x: 0,
-        y: 0,
-        z: 0,
-        velocity: 0
+        x: 0, y: 0, z: 0,
+        velocity: 0 //! TODO: velocity is vectorial
     });
 
     function changeValue(event: React.ChangeEvent<HTMLInputElement>) {
@@ -23,6 +22,14 @@ function DroneControl({ minimized }: { minimized?: boolean }) {
     }
     console.log(`The new set of values:`, values);
 
+    //! Never use an ID for a component that is used more than once, as it may
+    // result in undefined behavior.
+    //! The element should capture telemetry events and send command payloads.
+    // Event emitting should be handled in the Session class to send UI updates,
+    // such as telemetry data or UI locks.
+    //! Having a placeholder that clearly indicates the purpose of the input is
+    // the idiomatic approach. A placeholder string with `String(values)`,
+    // which results in `[object Object]`, is neither helpful nor standard.
     return (
         <div className={styles['control']}>
         <DropdownMenu title="control" minimized={minimized}>

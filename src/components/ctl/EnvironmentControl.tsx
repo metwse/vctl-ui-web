@@ -19,12 +19,14 @@ function EnvironmentControl() {
         console.log(`The set of the values in the environment input - ${values}`);
     }
 
+    //! Command payloads can send using session.send method. A high level
+    // method/class should be implemented to prevent duplicate code.
     return (
         <div className={styles['control']}>
             <DropdownMenu title="environment">
                 <div>
                     <input value={values.drone_count} id="drone_count" placeholder='drone count' type='number' onChange={changeValue}/>
-                    <button onClick={() => 
+                    <button onClick={() =>
                         EventHandler.emit(`drone_count`, {droneCount: values.drone_count, force: true} as InitializeEnvironment)}>
                             initialize environment</button>
                             /* Ask how to send this initialize environment command, whether the current form is accurate */

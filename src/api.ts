@@ -61,11 +61,15 @@ class Session {
                             .delete((d as CommandResponse).responseId);
                     }
                     // Classify the messages as sent and received
-                    // The sent messages from UI will be sent with to the websocket betweem client and backend
-                    // The received messages from backend will be sent to the websocket between the bacekend and UI
+                    // The sent messages from UI will be sent with to the
+                    // websocket betweem client and backend The received
+                    // messages from backend will be sent to the websocket
+                    // between the bacekend and UI
                     break;
                 case event.Op.Telemetry:
-                    EventHandler.emit('telemetry_update', (d as Telemetry).telemetry)
+                    EventHandler.emit(
+                        'telemetry_update', (d as Telemetry).telemetry
+                    )
                     break;
                 default:
                     // TODO: opcode handlers
@@ -73,10 +77,20 @@ class Session {
             }
         }
 
-        const eventList: string[] = [`drone_count`, `arm`, `force_arm`, `disarm`, `force_disarm`, `emergency`, `takeoff`, `land`, `track`, `move`];
+        const eventList: string[] = [
+            `drone_count`, `arm`, `force_arm`, `disarm`, `force_disarm`,
+            `emergency`, `takeoff`, `land`, `track`, `move`
+        ]; //! use ' instead of ` if possible
 
-        function sendEvent(this: {  ws: WebSocket  }, payload: DroneMovementCommands | DroneInitializeCommands){
-            let commandPayload = JSON.stringify(snakify(payload));
+        //! this.send instead of using raw WebSocket API.
+        //! TODO: A high-level method for sending command payloads is required.
+        function sendEvent(
+            this: {  ws: WebSocket  },
+            payload: DroneMovementCommands | DroneInitializeCommands
+        ) {
+            //! Invalid command payload. Command payloads should include `d`
+            // (data) and `op` (opcode) fields.
+            const commandPayload = JSON.stringify(snakify(payload));
             this.ws.send(commandPayload);
         }
 

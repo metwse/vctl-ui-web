@@ -6,8 +6,7 @@ function DropdownMenu(
         { children: ReactNode, minimized?: boolean, title: string }
 ) {
 
-    const [minimized_, setMinimized] =
-        useState(!!minimized);
+    const [minimized_, setMinimized] = useState(!!minimized);
 
     return (
         <section
