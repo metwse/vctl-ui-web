@@ -37,3 +37,5 @@ export interface DroneControl {
     drones: [number],
     responseId?: number,
 };
+
+export type DroneInitializeCommands = InitializeEnvironment /* If needed, add new interfaces with | in between */

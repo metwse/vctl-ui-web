@@ -2,9 +2,12 @@ import {
     CommandPayload, EventPayload,
     command, event
 } from './api/protocol.ts'
+import { DroneMovementCommands } from './api/protocol/droneCommand.ts'
+import { DroneInitializeCommands } from './api/protocol/command.ts'
 import snakify from 'snakify-ts'
 import camelize from 'camelize-ts'
-import { CommandResponse } from './api/protocol/event.ts'
+import { CommandResponse, Telemetry } from './api/protocol/event.ts'
+import { EventHandler } from './eventhandler.ts'
 
 
 /**
@@ -45,7 +48,6 @@ class Session {
 
             const d = payload.d;
             let resolver;
-
             switch (payload.op) {
                 case event.Op.CommandResponse:
                     resolver = session
@@ -58,12 +60,31 @@ class Session {
                             .responseCallbacks
                             .delete((d as CommandResponse).responseId);
                     }
+                    // Classify the messages as sent and received
+                    // The sent messages from UI will be sent with to the websocket betweem client and backend
+                    // The received messages from backend will be sent to the websocket between the bacekend and UI
+                    break;
+                case event.Op.Telemetry:
+                    EventHandler.emit('telemetry_update', (d as Telemetry).telemetry)
                     break;
                 default:
                     // TODO: opcode handlers
                     break;
             }
         }
+
+        const eventList: string[] = [`drone_count`, `arm`, `force_arm`, `disarm`, `force_disarm`, `emergency`, `takeoff`, `land`, `track`, `move`];
+
+        function sendEvent(this: {  ws: WebSocket  }, payload: DroneMovementCommands | DroneInitializeCommands){
+            let commandPayload = JSON.stringify(snakify(payload));
+            this.ws.send(commandPayload);
+        }
+
+        eventList.forEach(event => {
+            EventHandler.on(event, (payload) => {
+                sendEvent.call(this.ws, payload)
+            })
+        })
 
         const payloadData: command.Authenticate = { token };
         const response = await session.send(

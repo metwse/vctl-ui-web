@@ -6,9 +6,13 @@ export enum Op {
 };
 
 export interface Telemetry {
-    // TODO: Telemetry type
-    telemetry: object,
+    telemetry: [[number, DroneTelemetry]],
 };
+
+export interface DroneTelemetry {
+    telemetry_position: [number, number, number],
+    telemetry_velocity: [number, number, number]
+}
 
 export interface EnvironmentStatus {
     initialized: boolean,

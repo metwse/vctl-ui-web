@@ -42,7 +42,7 @@ input[type="checkbox"] {
     position: relative; appearance: none;
     background-color: var(--fg-1);
     transition: .1s background-color;
-    
+
     &:after {
         content: '✔';
         font-size: .75em;

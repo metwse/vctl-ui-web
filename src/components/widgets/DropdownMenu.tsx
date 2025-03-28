@@ -1,10 +1,9 @@
-import { useState, JSX } from 'react';
+import { useState, ReactNode } from 'react';
 import styles from './styles.module.scss';
-
 
 function DropdownMenu(
     { children, minimized, title }:
-        { children: JSX.Element, minimized?: boolean, title: string }
+        { children: ReactNode, minimized?: boolean, title: string }
 ) {
 
     const [minimized_, setMinimized] =
