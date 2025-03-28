@@ -1,14 +1,11 @@
 import snakify from 'snakify-ts'
 import camelize from 'camelize-ts'
+import EventEmitter from 'events'
 
 import {
     CommandPayload, EventPayload,
     command, event
 } from './api/protocol.ts'
-import { DroneMovementCommands } from './api/protocol/droneCommand.ts'
-import { DroneInitializeCommands } from './api/protocol/command.ts'
-import { CommandResponse, Telemetry } from './api/protocol/event.ts'
-import { EventHandler } from './eventHandler.ts'
 
 
 /**
@@ -17,13 +14,15 @@ import { EventHandler } from './eventHandler.ts'
 class Session {
     ws: WebSocket
     responseCallbacks: Map<number, (response: object) => void>
-    responseId: number;
+    responseId: number
+    event: EventEmitter
 
     /** @constructor */
     constructor(ws: WebSocket) {
         this.ws = ws;
         this.responseCallbacks = new Map;
         this.responseId = 0;
+        this.event = new EventEmitter();
     }
 
     /**
@@ -53,13 +52,13 @@ class Session {
                 case event.Op.CommandResponse:
                     resolver = session
                         .responseCallbacks
-                        .get((d as CommandResponse).responseId);
+                        .get((d as event.CommandResponse).responseId);
 
                     if (resolver) {
-                        resolver((d as CommandResponse).response);
+                        resolver((d as event.CommandResponse).response);
                         session
                             .responseCallbacks
-                            .delete((d as CommandResponse).responseId);
+                            .delete((d as event.CommandResponse).responseId);
                     }
                     // Classify the messages as sent and received
                     // The sent messages from UI will be sent with to the
@@ -68,8 +67,8 @@ class Session {
                     // between the bacekend and UI
                     break;
                 case event.Op.Telemetry:
-                    EventHandler.emit(
-                        'telemetry', (d as Telemetry).telemetry
+                    session.event.emit(
+                        'telemetry', (d as event.Telemetry).telemetry
                     )
                     break;
                 default:
@@ -77,29 +76,6 @@ class Session {
                     break;
             }
         }
-
-        const eventList: string[] = [
-            `drone_count`, `arm`, `force_arm`, `disarm`, `force_disarm`,
-            `emergency`, `takeoff`, `land`, `track`, `move`
-        ]; //! use ' instead of ` if possible
-
-        //! this.send instead of using raw WebSocket API.
-        //! TODO: A high-level method for sending command payloads is required.
-        function sendEvent(
-            this: {  ws: WebSocket  },
-            payload: DroneMovementCommands | DroneInitializeCommands
-        ) {
-            //! Invalid command payload. Command payloads should include `d`
-            // (data) and `op` (opcode) fields.
-            const commandPayload = JSON.stringify(snakify(payload));
-            this.ws.send(commandPayload);
-        }
-
-        eventList.forEach(event => {
-            EventHandler.on(event, (payload) => {
-                sendEvent.call(this.ws, payload)
-            })
-        })
 
         const payloadData: command.Authenticate = { token };
         const response = await session.send(

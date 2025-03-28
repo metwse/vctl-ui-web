@@ -19,6 +19,9 @@
         "@types/react": "^19",
         "@types/react-dom": "^19",
         "@types/ws": "^8",
+        "@types/events": "^3",
+        "events": "^3",
+
         "@vitejs/plugin-react-swc": "^3",
 
         "sass": "^1",

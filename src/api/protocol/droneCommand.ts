@@ -32,7 +32,3 @@ export interface Move {
     z: number,
     v: number,
 };
-
-
-export type DroneMovementCommands = Arm | Disarm | Emergency | Takeoff | Land |
-                                    Track | Move
