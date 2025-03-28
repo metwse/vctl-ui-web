@@ -1,8 +1,9 @@
 import DroneControl from './components/ctl/DroneControl';
 import EnvironmentControl from './components/ctl/EnvironmentControl';
 import DropdownMenu from './components/widgets/DropdownMenu';
-import styles from './App.module.scss';
 import TelemetryUpdater from './components/ctl/TelemetryUpdater';
+
+import styles from './App.module.scss';
 
 
 function App() {

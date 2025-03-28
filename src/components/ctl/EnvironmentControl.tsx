@@ -1,6 +1,6 @@
 import DropdownMenu from "../widgets/DropdownMenu.tsx";
 import styles from './control.module.scss';
-import { EventHandler } from "../../eventhandler.ts";
+import { EventHandler } from "../../eventHandler.ts";
 import { useState } from "react";
 import { InitializeEnvironment } from "../../api/protocol/command.ts";
 

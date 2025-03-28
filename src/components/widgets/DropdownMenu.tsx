@@ -1,6 +1,7 @@
 import { useState, ReactNode } from 'react';
 import styles from './styles.module.scss';
 
+
 function DropdownMenu(
     { children, minimized, title }:
         { children: ReactNode, minimized?: boolean, title: string }

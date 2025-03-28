@@ -1,6 +1,6 @@
 import DropdownMenu from "../widgets/DropdownMenu.tsx";
 import styles from './control.module.scss';
-import { EventHandler } from "../../eventhandler.ts";
+import { EventHandler } from "../../eventHandler.ts";
 import { useEffect, useState } from "react";
 import { Telemetry } from '../../api/protocol/event.ts'
 
@@ -11,16 +11,16 @@ function TelemetryUpdater({ minimized }: { minimized?: boolean }){
     function updatePosition(payload: Telemetry['telemetry'])  {
         setTelemetry(() => {
             const [[, DroneTelemetry]] = payload;
-            return [DroneTelemetry.telemetry_position, DroneTelemetry.telemetry_velocity];
+            return [DroneTelemetry.position, DroneTelemetry.velocity];
         })
     }
 
     //! A good example of useState.
     useEffect(() => {
-        EventHandler.on('telemetry_update', updatePosition);
+        EventHandler.on('telemetry', updatePosition);
 
         return () => {
-            EventHandler.off('telemetry_update', updatePosition)
+            EventHandler.off('telemetry', updatePosition)
         }
     }, [])
 

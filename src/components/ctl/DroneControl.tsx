@@ -1,8 +1,11 @@
-import DropdownMenu from '../widgets/DropdownMenu.tsx';
-import styles from './control.module.scss';
-import { EventHandler } from "../../eventhandler.ts";
-import { Arm, Disarm, Emergency, Takeoff, Land, Track, Move } from '../../api/protocol/droneCommand.ts';
 import { useState } from 'react';
+
+import DropdownMenu from '../widgets/DropdownMenu.tsx';
+import { EventHandler } from "../../eventHandler.ts";
+import { Arm, Disarm, Emergency, Takeoff, Land, Track, Move } from '../../api/protocol/droneCommand.ts';
+
+import styles from './control.module.scss';
+import { command } from '../../api/protocol.ts';
 
 
 function DroneControl({ minimized }: { minimized?: boolean }) {
@@ -35,7 +38,13 @@ function DroneControl({ minimized }: { minimized?: boolean }) {
         <DropdownMenu title="control" minimized={minimized}>
             <div>
                 <div className={styles['arm']}>
-                    <button onClick={() => EventHandler.emit(`arm`, {force: false} as Arm)}>arm</button>
+                    <button onClick={
+                        () => window.session.send(
+                            command.Op.DroneControl, { commandType: command.droneCommand.Op.Arm, commandArguments: { force: true } }
+                        )
+                    }>
+                        arm
+                    </button>
                     <button onClick={() => EventHandler.emit(`force_arm`, {force: true} as Arm)}>force arm</button>
                     <button onClick={() => EventHandler.emit(`disarm`, {force: false} as Disarm)}>disarm</button>
                     <button onClick={() => EventHandler.emit(`force_disarm`, {force: true} as Disarm)}>force disarm</button>

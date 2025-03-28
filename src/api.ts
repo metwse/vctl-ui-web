@@ -1,13 +1,14 @@
+import snakify from 'snakify-ts'
+import camelize from 'camelize-ts'
+
 import {
     CommandPayload, EventPayload,
     command, event
 } from './api/protocol.ts'
 import { DroneMovementCommands } from './api/protocol/droneCommand.ts'
 import { DroneInitializeCommands } from './api/protocol/command.ts'
-import snakify from 'snakify-ts'
-import camelize from 'camelize-ts'
 import { CommandResponse, Telemetry } from './api/protocol/event.ts'
-import { EventHandler } from './eventhandler.ts'
+import { EventHandler } from './eventHandler.ts'
 
 
 /**
@@ -68,7 +69,7 @@ class Session {
                     break;
                 case event.Op.Telemetry:
                     EventHandler.emit(
-                        'telemetry_update', (d as Telemetry).telemetry
+                        'telemetry', (d as Telemetry).telemetry
                     )
                     break;
                 default:
