@@ -4,10 +4,15 @@ import App from './App.tsx';
 import Session from './api.ts';
 
 
+window.rem = parseFloat(
+    getComputedStyle(document.documentElement).fontSize
+);
 window.session = await Session.connect('changeme', 'http://localhost:3000/');
-console.log(window.session)
 
-document.getElementById('initial-load')!.remove();
+document
+    .getElementById('initial-load')!
+    .remove();
 
-createRoot(document.body).render(<App></App>);
+createRoot(document.body)
+    .render(<App session={window.session} />);
 

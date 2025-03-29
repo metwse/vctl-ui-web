@@ -35,7 +35,7 @@ function App({ session }: { session: Session }) {
 
             const handleResize = () => {
                 let tabCount = tabFunctions.length - Math.min(
-                    Math.floor(window.innerWidth / 512),
+                    Math.floor(window.innerWidth / (window.rem * 32)),
                     tabFunctions.length,
                 );
 
