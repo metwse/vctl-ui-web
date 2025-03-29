@@ -5,8 +5,6 @@ import { command } from '../../api/protocol.ts';
 
 
 function DroneControl({ minimized }: { minimized?: boolean }) {
-    //! Never use an ID for a component that is used more than once, as it may
-    // result in undefined behavior.
     //! The element should capture telemetry events and send command payloads.
     // Event emitting should be handled in the Session class to send UI updates,
     // such as telemetry data or UI locks.

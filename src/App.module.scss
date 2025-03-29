@@ -1,9 +1,8 @@
-.individual-control,
-.control {
+main {
     display: flex;
-    flex-direction: column; gap: 1em;
-}
 
-.individual-control {
-    gap: .5em;
+    & > section {
+        flex: 1 1 0px;
+        min-width: 0;
+    }
 }
