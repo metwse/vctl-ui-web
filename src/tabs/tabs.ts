@@ -11,7 +11,6 @@ import * as icons from 'react-bootstrap-icons';
 
 
 export interface TabArgs {
-    ref: (ref: HTMLElement) => void,
     session: Session,
 }
 

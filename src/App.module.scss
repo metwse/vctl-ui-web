@@ -28,12 +28,6 @@ main {
                 background-color: var(--bg-2);
             }
         }
-
-        & > div {
-            & > section:not([data-active]) {
-                display: none;
-            }
-        }
     }
 }
 

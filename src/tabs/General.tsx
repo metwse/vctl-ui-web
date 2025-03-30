@@ -1,9 +1,9 @@
 import { TabArgs } from './tabs.ts';
 
 
-export default function General({ ref }: TabArgs) {
+export default function General({ session }: TabArgs) {
     return (
-        <section id="general" ref={ref}>
+        <section id="general">
             general
         </section>
     )

@@ -1,9 +1,9 @@
 import { TabArgs } from './tabs';
 
 
-export default function Telemetry({ ref }: TabArgs) {
+export default function Telemetry({ session }: TabArgs) {
     return (
-        <section id="telemetry" ref={ref}>
+        <section id="telemetry">
             telemetry
         </section>
     )
