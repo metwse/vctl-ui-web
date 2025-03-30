@@ -69,7 +69,7 @@ class Session {
                 case event.Op.Telemetry:
                     session.event.emit(
                         'telemetry', (d as event.Telemetry).telemetry
-                    )
+                    );
                     break;
                 default:
                     // TODO: opcode handlers

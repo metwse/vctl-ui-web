@@ -1,8 +1,48 @@
 main {
     display: flex;
+    padding: .5em; height: 100%;
+    gap: .5em;
 
     & > section {
+        min-width: 0; height: 100%;
         flex: 1 1 0px;
-        min-width: 0;
+    }
+
+    & > .tabs {
+
+        & > nav {
+            display: flex;
+            padding: .125em;
+            background-color: var(--bg-1);
+            flex-wrap: wrap; gap: 0 .25em;
+            font-size: .8em;
+
+            & a {
+                padding: .25em .5em;
+                cursor: pointer;
+
+                & > svg { display: none }
+            }
+
+            & a[data-active] {
+                background-color: var(--bg-2);
+            }
+        }
+
+        & > div {
+            & > section:not([data-active]) {
+                display: none;
+            }
+        }
+    }
+}
+
+@media (max-width: 48rem) {
+    main > .tabs > nav > a {
+       & > svg {
+          display: unset;
+       }
+
+       & > span { display: none }
     }
 }
