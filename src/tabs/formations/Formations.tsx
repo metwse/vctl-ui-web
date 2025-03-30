@@ -1,4 +1,4 @@
-import { TabArgs } from './tabs.ts';
+import { TabArgs } from '../tabs.ts';
 
 
 export default function Formations({ session }: TabArgs) {

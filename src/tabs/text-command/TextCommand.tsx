@@ -1,4 +1,4 @@
-import { TabArgs } from './tabs';
+import { TabArgs } from '../tabs';
 
 
 export default function TextCommand({ session }: TabArgs) {

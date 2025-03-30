@@ -1,10 +1,10 @@
 import Session from '../api.ts';
 
-import Formations from './Formations.tsx';
-import General from './General.tsx';
-import Telemetry from './Telemetry.tsx';
-import TextCommand from './TextCommand.tsx';
-import PaintArea from './PaintArea.tsx';
+import Formations from './formations/Formations.tsx';
+import General from './general/General.tsx';
+import Telemetry from './telemetry/Telemetry.tsx';
+import TextCommand from './text-command/TextCommand.tsx';
+import PaintArea from './paint-area/PaintArea.tsx';
 
 import { ReactNode } from 'react';
 import * as icons from 'react-bootstrap-icons';

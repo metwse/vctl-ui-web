@@ -1,4 +1,4 @@
-import { TabArgs } from './tabs';
+import { TabArgs } from '../tabs';
 
 
 export default function Telemetry({ session }: TabArgs) {
