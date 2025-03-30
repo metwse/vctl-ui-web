@@ -1,42 +1,74 @@
 main {
     display: flex;
-    padding: .5em; height: 100%;
-    gap: .5em;
+    padding: .25em; height: 100%;
+    gap: .125em;
 
-    & > section {
+    & > section,
+    & > .tabs {
         min-width: 0; height: 100%;
         flex: 1 1 0px;
     }
 
     & > .tabs {
+        display: flex;
+        flex-direction: column;
 
         & > nav {
             display: flex;
-            padding: .125em;
+            padding: 0 .125em;
             background-color: var(--bg-1);
-            flex-wrap: wrap; gap: 0 .25em;
-            font-size: .8em;
+            flex-wrap: wrap; gap: 0 .5em;
 
             & a {
+                display: flex;
                 padding: .25em .5em;
+                border-radius: .25em .25em / .25em .25em 0 0;
                 cursor: pointer;
+                justify-content: center;
+                user-select: none;
 
                 & > svg { display: none }
             }
 
             & a[data-active] {
                 background-color: var(--bg-2);
+                cursor: unset;
             }
+        }
+
+        & > div {
+            display: flex;
+            flex-grow: 1;
+            flex-direction: column;
+
+            & > section { height: 100%; }
         }
     }
 }
 
-@media (max-width: 48rem) {
-    main > .tabs > nav > a {
-       & > svg {
-          display: unset;
-       }
+section {
+    background-color: var(--bg-2);
+}
 
-       & > span { display: none }
+@media (max-width: 40rem) {
+    main > .tabs > nav > a {
+        font-size: 1.5em;
+        padding: .05em 1em;
+
+        & > svg { display: unset; }
+
+        & > span { display: none }
+    }
+}
+
+@media (max-width: 30rem) {
+    main > .tabs > nav > a {
+        padding: .05em .5em;
+    }
+}
+
+@media (max-width: 20rem) {
+    main > .tabs > nav > a {
+        padding: .05em .25em;
     }
 }

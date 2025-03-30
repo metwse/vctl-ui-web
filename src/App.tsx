@@ -25,8 +25,11 @@ function App({ session }: { session: Session }) {
     useEffect(
         () => {
             const handleResize = () => {
-                const count = panes.length -
-                    Math.floor(window.innerWidth / (window.rem * 32)) + 1;
+                let count = panes.length -
+                    Math.floor(window.innerWidth / (window.rem * 32));
+
+                if (count < panes.length)
+                    count += 1;
 
                 if (count >= 2 && activeTab >= count)
                     setActiveTab(count - 1)
@@ -44,15 +47,15 @@ function App({ session }: { session: Session }) {
     return (
         <main>
             {tabCount ?
-                <section className={styles['tabs']}>
+                <div className={styles['tabs']}>
                     <nav>
                         {...tabbedNavButtons.slice(0, tabCount)}
                     </nav>
                     <div>
                         {sections[activeTab]}
                     </div>
-                </section> : null
-            }
+                </div>
+            : null}
             {...sections.slice(tabCount)}
         </main>
     );

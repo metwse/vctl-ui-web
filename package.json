@@ -13,7 +13,9 @@
         "react-dom": "^19",
 
         "snakify-ts": "~2.3",
-        "camelize-ts": "^3"
+        "camelize-ts": "^3",
+
+        "react-bootstrap-icons": "~1.11"
     },
     "devDependencies": {
         "@types/react": "^19",
@@ -35,7 +37,6 @@
         "vite": "^6",
 
         "@vitejs/plugin-react-swc": "^3",
-        "react-bootstrap-icons": "~1.11",
         "globals": "^15"
     }
 }
