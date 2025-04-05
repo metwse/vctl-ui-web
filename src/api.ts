@@ -19,6 +19,13 @@ class Session {
     >
     responseId: number
     event: EventEmitter
+    droneCount?: number
+    isInitialized: boolean
+    /**
+     * Whether or not the back end is locked. Usually, back end is locked
+     * during the environment initialization to prevent data races.
+     */
+    isLocked: boolean
 
     /** @constructor */
     constructor(ws: WebSocket) {
@@ -26,6 +33,8 @@ class Session {
         this.responseCallbacks = new Map;
         this.responseId = 0;
         this.event = new EventEmitter();
+        this.isInitialized = false;
+        this.isLocked = true;
     }
 
     /**
@@ -68,6 +77,30 @@ class Session {
         heartbeat();
 
         return session;
+    }
+
+    /**
+     * Locks the session.
+     */
+    lock() {
+        this.isLocked = true;
+        this.#emitSyncUi();
+    }
+
+    /**
+     * Unlocks the session.
+     */
+    unlock() {
+        this.isLocked = false;
+        this.#emitSyncUi();
+    }
+
+    #emitSyncUi() {
+        this.event.emit(event.Op.SyncUi, {
+            initialized: this.isInitialized,
+            droneCount: this.droneCount,
+            uiLocked: this.isLocked
+        });
     }
 
     /**
@@ -142,16 +175,25 @@ class Session {
 
     #handleEventPayload(op: event.Op, d?: object) {
         if (op == event.Op.CommandResponse) {
+            const data = d as event.CommandResponse;
             const resolver = this
                 .responseCallbacks
-                .get((d as event.CommandResponse).responseId);
+                .get(data.responseId);
 
             if (resolver) {
-                resolver((d as event.CommandResponse).response);
+                resolver(data.response);
                 this
                     .responseCallbacks
-                    .delete((d as event.CommandResponse).responseId);
+                    .delete(data.responseId);
             }
+        }
+
+        if (op == event.Op.SyncUi) {
+            const data = d as event.SyncUi;
+
+            this.droneCount = data.droneCount ? data.droneCount : undefined;
+            this.isInitialized = data.initialized;
+            this.isLocked = data.uiLocked;
         }
 
         this.event.emit(op, d);

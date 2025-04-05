@@ -1,3 +1,7 @@
+@use 'sass:color';
+@use './css/theme.scss';
+
+
 main {
     display: flex;
     padding: .25em; height: 100%; max-height: 100%;
@@ -18,7 +22,7 @@ main {
             display: flex;
             padding: 0 .125em;
             position: sticky; top: 0;
-            background-color: var(--bg-1);
+            background-color: theme.$bg-1;
             flex-wrap: wrap; gap: 0 .5em;
             z-index: 2;
 
@@ -34,7 +38,7 @@ main {
             }
 
             & a[data-active] {
-                background-color: var(--bg-2);
+                background-color: theme.$bg-2;
                 cursor: unset;
             }
         }
@@ -49,10 +53,18 @@ main {
     }
 }
 
+.ui-lock {
+    display: flex;
+    position: absolute; inset: 0;
+    justify-content: center; align-items: center;
+    background: rgba(theme.$bg-1, .5); backdrop-filter: blur(8px);
+    z-index: 2;
+}
+
 main > section,
 .tabs > div > section {
     padding: .5em 1em; max-height: 100%;
-    background-color: var(--bg-2);
+    background-color: theme.$bg-2;
     overflow: auto;
 }
 

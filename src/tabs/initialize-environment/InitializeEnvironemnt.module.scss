@@ -1,0 +1,16 @@
+.initialize-environment {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+    justify-content: center; align-items: center;
+
+    & h2 { margin: 0; }
+
+    & input { min-width: 10em; }
+
+    & div {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap; gap: .5em;
+    }
+}

@@ -15,11 +15,12 @@ export interface TabArgs {
 }
 
 export const panes:
-    // Title, tab, and title icon respectively.
-    [string, (a: TabArgs) => ReactNode, icons.Icon][] = [
-    ['Text Command', TextCommand, icons.Terminal],
-    ['Paint Area', PaintArea, icons.Easel2],
-    ['Formations', Formations, icons.Diagram3],
-    ['General', General, icons.Sliders2],
-    ['Telemetry', Telemetry, icons.Info],
+    // Title, title icon, and function respectively.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [string, icons.Icon, (a: any) => ReactNode][] = [
+    ['Text Command', icons.Terminal, TextCommand],
+    ['Paint Area', icons.Easel2, PaintArea],
+    ['Formations', icons.Diagram3, Formations],
+    ['General', icons.Sliders2, General],
+    ['Telemetry', icons.Info, Telemetry],
 ];

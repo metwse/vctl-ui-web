@@ -1,3 +1,6 @@
+@use '../../css/theme.scss';
+
+
 .dropdown-menu {
     display: flex;
     flex-direction: column; gap: .5em;
@@ -6,7 +9,7 @@
     & > header {
         display: flex;
         padding: .5em 1em;
-        border: .125em solid var(--bg-3); border-left: none; border-right: none;
+        border: .125em solid theme.$bg-3; border-left: none; border-right: none;
         font-size: .75em; text-transform: uppercase;
         align-content: center; gap: .5em;
         user-select: none; cursor: pointer;
@@ -20,7 +23,7 @@
     & > .children {
         height: max-content;
         padding-left: 1em;
-        border-left: .125em solid var(--bg-3);
+        border-left: .125em solid theme.$bg-3;
         transition: height .3s;
         overflow: hidden;
     }
