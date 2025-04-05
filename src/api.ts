@@ -6,14 +6,17 @@ import {
     CommandPayload, EventPayload,
     command, event
 } from './api/protocol.ts'
-
+import { CommandResponsePayload } from './api/protocol/event.ts'
 
 /**
  * API client library session.
  */
 class Session {
     ws: WebSocket
-    responseCallbacks: Map<number, (response: object) => void>
+    responseCallbacks: Map<
+        number,
+        (response: CommandResponsePayload) => void
+    >
     responseId: number
     event: EventEmitter
 
@@ -26,7 +29,7 @@ class Session {
     }
 
     /**
-     * Connects to the backend api.
+     * Connects to the backend API.
      * @param {string} token - API token.
      * @param {string} api - The URL of the backend.
      */
@@ -46,45 +49,23 @@ class Session {
                 JSON.parse(stringPayload.data)
             );
 
-            const d = payload.d;
-            let resolver;
-            switch (payload.op) {
-                case event.Op.CommandResponse:
-                    resolver = session
-                        .responseCallbacks
-                        .get((d as event.CommandResponse).responseId);
-
-                    if (resolver) {
-                        resolver((d as event.CommandResponse).response);
-                        session
-                            .responseCallbacks
-                            .delete((d as event.CommandResponse).responseId);
-                    }
-                    // Classify the messages as sent and received
-                    // The sent messages from UI will be sent with to the
-                    // websocket betweem client and backend The received
-                    // messages from backend will be sent to the websocket
-                    // between the bacekend and UI
-                    break;
-                case event.Op.Telemetry:
-                    session.event.emit(
-                        'telemetry', (d as event.Telemetry).telemetry
-                    );
-                    break;
-                default:
-                    // TODO: opcode handlers
-                    break;
-            }
+            session.#handleEventPayload(payload.op, payload.d)
         }
 
         const payloadData: command.Authenticate = { token };
         const response = await session.send(
             command.Op.Authenticate,
             payloadData
-        ) as { success: boolean };
+        );
 
         if (!response.success)
             throw false;
+
+        const heartbeat = () => {
+            session.sendNoRes(command.Op.Heartbeat);
+            setTimeout(heartbeat, 10_000);
+        }
+        heartbeat();
 
         return session;
     }
@@ -95,7 +76,7 @@ class Session {
      * @param {object?} d - Payload data.
      */
     async send(op: command.Op, d?: object) {
-        return await this.#sendInternal(op, true, d);
+        return (await this.#sendInternal(op, true, d))!;
     }
 
     /**
@@ -111,7 +92,7 @@ class Session {
         op: command.Op,
         awaitResponse: boolean,
         d?: object,
-    ): Promise<object | null> {
+    ): Promise<CommandResponsePayload | null> {
         // A response id is provided to the server if await response set to
         // true.
         const responseId = awaitResponse ? this.responseId++ : undefined;
@@ -127,9 +108,9 @@ class Session {
         this.ws.send(stringPayload);
 
         if (responseId !== undefined) {
-            let resolver: (response: object) => void;
+            let resolver: (response: CommandResponsePayload) => void;
 
-            const promise = new Promise<object>((res) => {
+            const promise = new Promise<CommandResponsePayload>((res) => {
                 // Exposing `res` to the upper scope.
                 resolver = res;
             });
@@ -143,7 +124,7 @@ class Session {
             this.responseCallbacks.set(
                 responseId,
                 // Pushes resolver into the callback list.
-                (response: object) => {
+                (response: CommandResponsePayload) => {
                     const tryResolverInitialization = () => {
                         if (!resolver)
                             setTimeout(tryResolverInitialization, 1);
@@ -157,6 +138,24 @@ class Session {
             return await promise;
         } else
             return null;
+    }
+
+    #handleEventPayload(op: event.Op, d?: object) {
+        if (op == event.Op.CommandResponse) {
+            const resolver = this
+                .responseCallbacks
+                .get((d as event.CommandResponse).responseId);
+
+            if (resolver) {
+                resolver((d as event.CommandResponse).response);
+                this
+                    .responseCallbacks
+                    .delete((d as event.CommandResponse).responseId);
+            }
+        }
+
+        this.event.emit(op, d);
+        this.event.emit('EVENT_PAYLOAD', { op, d });
     }
 }
 
