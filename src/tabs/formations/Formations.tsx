@@ -1,7 +1,4 @@
-import { TabArgs } from '../tabs.ts';
-
-
-export default function Formations({ session }: TabArgs) {
+export default function Formations() {
     return (
         <section id="formations">
             formations

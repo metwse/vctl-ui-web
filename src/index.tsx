@@ -8,12 +8,33 @@ window.rem = parseFloat(
     getComputedStyle(document.documentElement).fontSize
 );
 
-window.session = await Session.connect('changeme', 'http://localhost:3000/');
+(async function () {
+    try {
+        const session = await Session.connect(
+            'changeme', 'http://localhost:3000/'
+        );
+        window.session = session;
 
-document
-    .getElementById('initial-load')!
-    .remove();
+        session.ws.onclose = () => {
+            location.reload();
+        }
 
-createRoot(document.body)
-    .render(<App session={window.session} />);
+        document
+            .getElementById('initial-load')!
+            .remove();
 
+        createRoot(document.body)
+            .render(<App session={window.session} />);
+    } catch {
+        createRoot(document.body)
+        .render(
+            <div id="connection-loss">
+                <p>
+                    Cannot establish a server connection. Perhaps the server is
+                    offline or the credentials provided are invalid.
+                </p>
+                <button onClick={() => location.reload()}>reload</button>
+            </div>
+        );
+    }
+})()

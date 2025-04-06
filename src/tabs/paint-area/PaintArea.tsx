@@ -1,7 +1,4 @@
-import { TabArgs } from '../tabs';
-
-
-export default function PaintArea({ session }: TabArgs) {
+export default function PaintArea() {
     return (
         <section id="paint-area">
             paint area

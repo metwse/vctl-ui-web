@@ -1,7 +1,4 @@
-import { TabArgs } from '../tabs';
-
-
-export default function TextCommand({ session }: TabArgs) {
+export default function TextCommand() {
     return (
         <section id="text-command">
             text command
