@@ -34,6 +34,6 @@ export interface UnsubscribeDroneTelemetry {
 export interface DroneControl {
     command: droneCommand.Op,
     commandArgs?: object,
-    drones: [number],
+    drones: number[] | 'all',
     responseId?: number,
 };

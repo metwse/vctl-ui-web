@@ -1,0 +1,48 @@
+@use '../../css/theme.scss';
+
+
+.drone-ctl {
+    display: flex;
+    flex-direction: column;
+
+    & .grid {
+        display: grid;
+        margin: auto; max-width: 24em;
+        gap: .5em 1.25em;
+
+        & * { min-width: 0; font-size: 1em }
+    }
+
+    & > h3 {
+        margin: 0 0 .5em; padding-bottom: .125em;
+        font-weight: normal;
+        border-bottom: solid .125em theme.$bd-1;
+
+        &:not(:first-of-type) {
+            margin-top: 1em;
+        }
+    }
+}
+
+.general {
+    grid-template-columns: 1fr 1fr;
+
+    & .emergency-button { transform: translateX(50%) }
+}
+
+.takeoff {
+    grid-template-columns: 1fr 1fr;
+}
+
+.movement {
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+
+@media (max-width: 20rem) {
+    .movement {
+        grid-template-columns: 1fr 1fr;
+
+        & br { display: none; }
+    }
+}

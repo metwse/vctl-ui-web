@@ -1,9 +1,35 @@
-.individual-control,
-.control {
+@use '../../css/theme.scss';
+
+.section {
     display: flex;
-    flex-direction: column; gap: 1em;
+    flex-direction: column; gap: 2em;
+
+    & > * > h2 {
+        margin: 0;
+        font-size: 1.5em; font-weight: normal;
+    }
+}
+
+.swarm-control {
+    display: flex;
+    gap: 1em; flex-direction: column;
+
+    & .select-drones {
+        display: flex;
+        gap: .25em; flex-wrap: wrap;
+
+        & button {
+            background: theme.$bg-3;
+            font-size: .75em;
+
+            &[data-selected] {
+                background: theme.$fg-2;
+            }
+        }
+    }
 }
 
 .individual-control {
-    gap: .5em;
+    display: flex;
+    gap: 1em; flex-direction: column;
 }
