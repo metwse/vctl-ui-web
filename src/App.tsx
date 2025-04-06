@@ -10,13 +10,15 @@ import InitializeEnvironment from
     './tabs/initialize-environment/InitializeEnvironment.tsx';
 
 
-function App({ session }: { session: Session }) {
+function App({ session, token }: { session: Session, token: string }) {
     const [tabCount, setTabCount] = useState(0);
     const [activeTab, setActiveTab] = useState(panes.length);
 
-    const [isUiLocked, setIsUiLocked] = useState(session.isLocked);
+    const [isUiLocked, setIsUiLocked] = useState(true);
     const [isEnvironmentInitialized, setIsEnvironmentInitialized] =
-        useState(session.isInitialized);
+        useState(false);
+
+    session.authenticate(token);
 
     const tabbedNavButtons = panes.map(([text, Icon], i) => (
         <a
@@ -40,7 +42,7 @@ function App({ session }: { session: Session }) {
         session.event.addListener(event.Op.SyncUi, syncUi)
 
         return () => { session.event.removeListener(event.Op.SyncUi, syncUi) };
-    }, [isUiLocked, isEnvironmentInitialized, session.event])
+    }, [isUiLocked, isEnvironmentInitialized, session])
 
     useEffect(
         () => {

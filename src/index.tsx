@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client';
+import { StrictMode } from 'react';
 
 import App from './App.tsx';
 import Session from './api.ts';
@@ -10,9 +11,7 @@ window.rem = parseFloat(
 
 (async function () {
     try {
-        const session = await Session.connect(
-            'changeme', 'http://localhost:3000/'
-        );
+        const session = await Session.connect('http://localhost:3000/');
         window.session = session;
 
         session.ws.onclose = () => {
@@ -24,7 +23,11 @@ window.rem = parseFloat(
             .remove();
 
         createRoot(document.body)
-            .render(<App session={window.session} />);
+            .render(
+                <StrictMode>
+                    <App session={window.session} token="changeme" />
+                </StrictMode>
+            );
     } catch {
         createRoot(document.body)
         .render(

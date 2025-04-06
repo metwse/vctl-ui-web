@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 
 
 export default function General({ session }: TabArgs) {
-    const [droneCount, setDroneCount] = useState(0);
+    const [droneCount, setDroneCount] = useState(session.droneCount);
 
     useEffect(() => {
         const syncUi = ({ droneCount }: event.SyncUi) =>
@@ -32,7 +32,7 @@ export default function General({ session }: TabArgs) {
                     <div className={styles['individual-control']}>
                         {
                             new Array(droneCount).fill(0).map((_, i) => (
-                                <DropdownMenu title={`drone ${i + 1}`} minimized>
+                                <DropdownMenu title={`drone ${i + 1}`} minimized key={i}>
                                     <DroneControl />
                                 </DropdownMenu>
                             ))

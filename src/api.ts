@@ -26,6 +26,7 @@ class Session {
      * during the environment initialization to prevent data races.
      */
     isLocked: boolean
+    isAuthenticated: boolean
 
     /** @constructor */
     constructor(ws: WebSocket) {
@@ -35,14 +36,14 @@ class Session {
         this.event = new EventEmitter();
         this.isInitialized = false;
         this.isLocked = true;
+        this.isAuthenticated = false;
     }
 
     /**
      * Connects to the backend API.
-     * @param {string} token - API token.
      * @param {string} api - The URL of the backend.
      */
-    static async connect(token: string, api: string) {
+    static async connect(api: string) {
         const session = await new Promise<Session>((res, rej) => {
             const ws = new WebSocket(api);
 
@@ -50,33 +51,43 @@ class Session {
             ws.onclose = e => rej(e);
         });
 
+        return session
+    }
+
+    /**
+     * Authenticates the WebSockets, registers event listeners.
+     * @param {string} token - API token.
+     */
+    async authenticate(token: string) {
+        if (this.isAuthenticated)
+            return;
+        this.isAuthenticated = true;
+
         // Bind message listener to the WebSocket. Command responses are
         // handled with the `onmessage` handler. No command should be sent
         // before this binding.
-        session.ws.onmessage = (stringPayload) => {
+        this.ws.onmessage = (stringPayload) => {
             const payload = camelize<EventPayload, false>(
                 JSON.parse(stringPayload.data)
             );
 
-            session.#handleEventPayload(payload.op, payload.d)
+            this.#handleEventPayload(payload.op, payload.d)
         }
 
         const payloadData: command.Authenticate = { token };
-        const response = await session.send(
+        const response = await this.send(
             command.Op.Authenticate,
             payloadData
         );
 
         if (!response.success)
-            throw false;
+            this.ws.close();
 
         const heartbeat = () => {
-            session.sendNoRes(command.Op.Heartbeat);
+            this.sendNoRes(command.Op.Heartbeat);
             setTimeout(heartbeat, 10_000);
         }
         heartbeat();
-
-        return session;
     }
 
     /**
