@@ -6,6 +6,7 @@ export enum Op {
     Land = 'LAND',
     Track = 'TRACK',
     Move = 'MOVE',
+    Formation = 'FORMATION'
 };
 
 export interface Arm {
@@ -31,4 +32,8 @@ export interface Move {
     y: number,
     z: number,
     v: number,
+};
+
+export interface Formation {
+    formation: string,
 };

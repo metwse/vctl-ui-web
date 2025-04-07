@@ -7,6 +7,7 @@ import DropdownMenu from '../../components/dropdown-menu/DropdownMenu.tsx';
 import styles from './General.module.scss';
 
 import { useEffect, useState } from 'react';
+import { droneCommand } from '../../api/protocol/command.ts';
 
 
 export default function General({ session }: TabArgs) {
@@ -28,6 +29,33 @@ export default function General({ session }: TabArgs) {
                 <h2>Swarm Control</h2>
 
                 <DroneCtl session={session} drones={swarmDrones}/>
+
+                <div className={styles['formations']}>
+                    <h3>Formations</h3>
+                    <div>
+                        <button onClick={() => session.sendDroneCommand(
+                            droneCommand.Op.Formation,
+                            swarmDrones,
+                            { formation: 'V' }
+                        )}>
+                            V
+                        </button>
+                        <button onClick={() => session.sendDroneCommand(
+                            droneCommand.Op.Formation,
+                            swarmDrones,
+                            { formation: 'LINE' }
+                        )}>
+                            Line
+                        </button>
+                        <button onClick={() => session.sendDroneCommand(
+                            droneCommand.Op.Formation,
+                            swarmDrones,
+                            { formation: 'INVERSE_V' }
+                        )}>
+                            Λ
+                        </button>
+                    </div>
+                </div>
 
                 <DropdownMenu title="selected drones">
                     <div className={styles['select-drones']}>

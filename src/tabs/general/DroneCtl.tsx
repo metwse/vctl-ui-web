@@ -1,5 +1,4 @@
 import Session from '../../api.ts';
-import { command } from '../../api/protocol.ts';
 import { droneCommand } from '../../api/protocol/command';
 
 import styles from './DroneCtl.module.scss';
@@ -13,13 +12,7 @@ export default function DroneCtl(
     const sendDroneCommand = (
         droneCommand: droneCommand.Op, commandArgs?: object
     ) => {
-        const payload: command.DroneControl = {
-            command: droneCommand,
-            commandArgs,
-            drones,
-        }
-
-        session.send(command.Op.DroneControl, payload)
+        session.sendDroneCommand(droneCommand, drones, commandArgs);
     }
 
     const takeoff = (e: FormEvent) => {

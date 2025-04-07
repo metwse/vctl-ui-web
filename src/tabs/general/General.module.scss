@@ -4,15 +4,35 @@
     display: flex;
     flex-direction: column; gap: 2em;
 
-    & > * > h2 {
+    & h2 {
         margin: 0;
         font-size: 1.5em; font-weight: normal;
+    }
+
+    & h3 {
+        margin: 0 0; padding-bottom: .125em;
+        font-weight: normal;
+        border-bottom: solid .125em theme.$bd-1;
     }
 }
 
 .swarm-control {
     display: flex;
-    gap: 1em; flex-direction: column;
+    gap: .5em; flex-direction: column;
+
+    & .formations {
+        display: flex;
+        flex-direction: column; gap: .5em;
+
+        & div {
+            display: flex;
+            gap: .5em;
+
+            & button {
+               font-size: 1em;
+            }
+        }
+    }
 
     & .select-drones {
         display: flex;

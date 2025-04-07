@@ -6,6 +6,7 @@ import {
     CommandPayload, EventPayload,
     command, event
 } from './api/protocol.ts'
+import { droneCommand } from './api/protocol/command.ts'
 import { CommandResponsePayload } from './api/protocol/event.ts'
 
 /**
@@ -122,6 +123,20 @@ class Session {
     async send(op: command.Op, d?: object) {
         return (await this.#sendInternal(op, true, d))!;
     }
+
+    sendDroneCommand(
+        droneCommand: droneCommand.Op, drones: number[] | 'all',
+        commandArgs?: object
+    ) {
+        const payload: command.DroneControl = {
+            command: droneCommand,
+            commandArgs,
+            drones,
+        }
+
+        return this.send(command.Op.DroneControl, payload)
+    }
+
 
     /**
      * Sends the payload, not awaiting its response.
