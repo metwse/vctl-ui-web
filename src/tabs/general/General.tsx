@@ -6,13 +6,14 @@ import DropdownMenu from '../../components/dropdown-menu/DropdownMenu.tsx';
 
 import styles from './General.module.scss';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { droneCommand } from '../../api/protocol/command.ts';
 
 
 export default function General({ session }: TabArgs) {
     const [droneCount, setDroneCount] = useState(session.droneCount);
-    const [swarmDrones, setSwarmDrones] = useState<number[] | 'all'>('all')
+    const [swarmDrones, setSwarmDrones] = useState<number[] | 'all'>('all');
+    const swarmFormationSpeed = useRef<HTMLInputElement>(null);
 
     useEffect(() => {
         const syncUi = ({ droneCount }: event.SyncUi) =>
@@ -33,24 +34,39 @@ export default function General({ session }: TabArgs) {
                 <div className={styles['formations']}>
                     <h3>Formations</h3>
                     <div>
+                        <input
+                            placeholder="v"
+                            type="number"
+                            step="any"
+                            ref={swarmFormationSpeed}
+                        />
                         <button onClick={() => session.sendDroneCommand(
                             droneCommand.Op.Formation,
                             swarmDrones,
-                            { formation: 'V' }
+                            {
+                                formation: 'V',
+                                v: +swarmFormationSpeed.current!.value
+                            }
                         )}>
                             V
                         </button>
                         <button onClick={() => session.sendDroneCommand(
                             droneCommand.Op.Formation,
                             swarmDrones,
-                            { formation: 'LINE' }
+                            {
+                                formation: 'LINE',
+                                v: +swarmFormationSpeed.current!.value
+                            }
                         )}>
                             Line
                         </button>
                         <button onClick={() => session.sendDroneCommand(
                             droneCommand.Op.Formation,
                             swarmDrones,
-                            { formation: 'INVERSE_V' }
+                            {
+                                formation: 'INVERSE-V',
+                                v: +swarmFormationSpeed.current!.value
+                            }
                         )}>
                             Λ
                         </button>

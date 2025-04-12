@@ -36,4 +36,5 @@ export interface Move {
 
 export interface Formation {
     formation: string,
+    v: number,
 };

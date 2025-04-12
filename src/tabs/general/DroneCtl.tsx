@@ -26,7 +26,7 @@ export default function DroneCtl(
         const formData = new FormData(e.target as HTMLFormElement);
         e.preventDefault()
         sendDroneCommand(
-            droneCommand.Op.Takeoff,
+            droneCommand.Op.Move,
             Object.fromEntries(
                 Array.from(formData.entries())
                     .map(([k, v]: [string, FormDataEntryValue]) => [k, +v])
