@@ -7,6 +7,7 @@ export enum Op {
     Authenticate = 'AUTHENTICATE',
     Heartbeat = 'HEARTBEAT',
     InitializeEnvironment = 'INITIALIZE_ENVIRONMENT',
+    KillEnvironment = 'KILL_ENVIRONMENT',
     DroneTelemetry = 'DRONE_TELEMETRY',
     UnsubscribeDroneTelemetry = 'UNSUBSCRIBE_DRONE_TELEMETRY',
     DroneControl = 'DRONE_CONTROL',

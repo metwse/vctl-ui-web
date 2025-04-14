@@ -1,4 +1,4 @@
-import { event } from '../../api/protocol.ts';
+import { command, event } from '../../api/protocol.ts';
 
 import { TabArgs } from '../tabs.ts';
 import DroneCtl from './DroneCtl.tsx';
@@ -120,16 +120,18 @@ export default function General({ session }: TabArgs) {
                 <h2>Individual Control</h2>
                 {
                     new Array(droneCount).fill(0).map((_, i) => (
-                        <DropdownMenu
-                            title={`Drone ${i + 1}`}
-                            minimized
-                            key={i}
-                        >
+                        <DropdownMenu title={`Drone ${i + 1}`} key={i}>
                             <DroneCtl session={session} drones={[i]}/>
                         </DropdownMenu>
                     ))
                 }
-           </div>
+            </div>
+            <button
+                onClick={() => session.send(command.Op.KillEnvironment)}
+                className={styles['kill-environment']}
+            >
+                end simulation
+            </button>
         </section>
     )
 }
