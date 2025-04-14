@@ -3,8 +3,7 @@
 
 .drone-ctl {
     display: flex;
-    flex-direction: column;
-    gap: .5em;
+    flex-direction: column; gap: .5em;
 
     & .grid {
         display: grid;

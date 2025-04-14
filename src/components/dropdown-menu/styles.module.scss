@@ -29,7 +29,7 @@
     }
 }
 
-.dropdown-menu[d-minimized] {
+.dropdown-menu[data-minimized] {
     gap: 0;
 
     & > header .icon {

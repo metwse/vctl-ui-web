@@ -10,8 +10,8 @@ export interface Telemetry {
 };
 
 export interface DroneTelemetry {
-    position: [number, number, number],
-    velocity: [number, number, number]
+    pos: number[],
+    v: number
 }
 
 export interface SyncUi {

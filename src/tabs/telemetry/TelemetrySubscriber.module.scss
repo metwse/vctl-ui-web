@@ -1,0 +1,15 @@
+.telemetry-subscriber {
+    display: flex;
+    gap: .5em; flex-wrap: wrap;
+
+    & > div {
+        display: grid;
+        grid-template-columns: 1em 1fr;
+
+        & > *:nth-child(2n) {
+            min-width: 8em;
+        }
+
+        & > *:nth-child(2n + 1) { opacity: .5; }
+    }
+}
